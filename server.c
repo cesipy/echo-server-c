@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 
     
     int stop_flag = 0;
-    /*
+    /**
      * while loop waits for incoming connections
      * as this is only single threaded, only one client at a time
      * can connect to the server.
@@ -58,6 +58,8 @@ int main(int argc, char* argv[])
     while(!stop_flag) 
     {
         socklen_t addrlen = sizeof(client);
+
+        // accept new incoming connection from sockfd
         int new_socket = accept(sockfd, (struct sockaddr*)&client, &addrlen);
         if (new_socket <0) 
         {
@@ -69,7 +71,7 @@ int main(int argc, char* argv[])
         // loop for clonnection
         for (;;) 
         {
-            memset(buffer, 0, BUF_SIZE);
+            memset(buffer, 0, BUF_SIZE);    // reset bffer
             int status_read = read(new_socket, buffer, BUF_SIZE - 1);
             if (status_read <0)
             {
