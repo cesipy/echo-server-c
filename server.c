@@ -40,6 +40,10 @@ int main(int argc, char* argv[])
     sockfd = setup_socket(port, &server);
     printf("Server connected to port %d\n", port);
 
+    /**
+     * set up a singal handler to handle CTRL + C
+     * if SIGINT is received, the server is shut down gracefully
+    */
     struct sigaction sa;
     sa.sa_handler = signal_handler;
     sigemptyset(&sa.sa_mask);
@@ -51,10 +55,16 @@ int main(int argc, char* argv[])
     }
     
     int stop_flag = 0;
+    /**
+      * while loop waits for incoming connections
+      * as this is only single threaded, only one client at a time
+      * can connect to the server.
+      */
     while(!stop_flag) 
     {
         socklen_t addrlen = sizeof(client);
 
+        // accept new incoming connections from sockfd
         new_socket = accept(sockfd, (struct sockaddr*)&client, &addrlen);
         if (new_socket <0) 
         {
@@ -63,9 +73,10 @@ int main(int argc, char* argv[])
         }
         printf("Connected!\n");
 
+        // loop for the connection
         for (;;) 
         {
-            memset(buffer, 0, BUF_SIZE);   
+            memset(buffer, 0, BUF_SIZE);        // reset buffer
             int status_read = read(new_socket, buffer, BUF_SIZE - 1);
             if (status_read <0)
             {
