@@ -1,3 +1,11 @@
+/**
+ * TODO:
+ *  add nc usage to README
+ *  error handling
+ *  add comments
+ *  extract to functions
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -9,6 +17,7 @@
 #define BUF_SIZE 1024
 
 void cleanup(int sockfd, int new_socket);
+int setup_socket(int port);
 
 int main(int argc, char* argv[]){
     if (argc != 2) { exit(EXIT_FAILURE);}
@@ -108,7 +117,9 @@ int main(int argc, char* argv[]){
 
 void cleanup(int sockfd, int new_socket) 
 {
-    if (new_socket != -1) close(new_socket);
-    if (sockfd != -1) close(sockfd);
+    if (new_socket != -1) 
+        close(new_socket);
+    if (sockfd != -1) 
+        close(sockfd);
     exit(EXIT_FAILURE);
 }
