@@ -22,6 +22,12 @@ Once you've compiled the server, you can run it with a single argument, the port
 
 The server will then listen for incoming connections on port 8080. It can handle one client at a time. Remember: Port 0-1023 are priviliged and should not be used!
 
+You can use netcat to connect to the server using the following command:
+
+```bash
+nc localhost <port>
+````
+
 ## Behavior
 
 The server waits for incoming connections, and once a client is connected, it enters a loop where it reads data from the client and echoes it back. The server keeps track of a "stop flag" which, when set, causes the server to shutdown. The stop flag is set when a client sends a `/close` command.
