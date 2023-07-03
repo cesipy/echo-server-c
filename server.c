@@ -38,6 +38,11 @@ int main(int argc, char* argv[])
     }
 
     sockfd = setup_socket(port, &server);
+    if (sockfd == -1) 
+    {
+        perror("error occurred while seting up socked: ");
+        exit(EXIT_FAILURE);
+    }
     printf("Server connected to port %d\n", port);
 
     /**
@@ -49,7 +54,8 @@ int main(int argc, char* argv[])
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
 
-    if (sigaction(SIGINT, &sa, NULL) == -1) {
+    if (sigaction(SIGINT, &sa, NULL) == -1) 
+    {
         perror("sigaction");
         return 1;
     }
@@ -78,13 +84,12 @@ int main(int argc, char* argv[])
         {
             memset(buffer, 0, BUF_SIZE);        // reset buffer
             int status_read = read(new_socket, buffer, BUF_SIZE - 1);
-            if (status_read <0)
+            if (status_read < 0)
             {
                 perror("error reading buffer");
                 cleanup(sockfd, new_socket);
             }
-            else if (status_read == 0) 
-            { break; }
+            else if (status_read == 0) { break; }
 
             char* shutdown_message = "/close";
             if (!strncmp(buffer, shutdown_message, strlen(shutdown_message))) 
@@ -104,6 +109,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+/*------------------------------------------*/
 
 int setup_socket(int port, struct sockaddr_in *server) 
 {
